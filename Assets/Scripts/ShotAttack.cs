@@ -28,7 +28,6 @@ public static class ShotAttack
     {
         float angleBetweenBullets = 360f / settings.NumberOfBullets;
 
-        // if offsetPhase = true, shift everything half a step (like the second “layer” of the star)
         float baseOffset = offsetPhase ? angleBetweenBullets / 2f : 0f;
 
         if (settings.AngleOffset != 0f || settings.PhaseOffset != 0f)
