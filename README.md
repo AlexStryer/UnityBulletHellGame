@@ -61,3 +61,7 @@ https://www.youtube.com/watch?v=rVBzTKvoStk
 https://www.youtube.com/watch?v=0cycus0Ojnc  
 https://www.youtube.com/watch?v=xrLlZ1mHCTA  
 https://www.youtube.com/watch?v=_YgeNG6MtQQ
+
+# Aviso
+
+Este texto fue escrito por AI simplemente para documentar el trabajo de forma rapida y sensilla. Si quieren un documento más extenso de la creacion me pueden contactar. 
