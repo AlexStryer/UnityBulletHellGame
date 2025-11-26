@@ -1,63 +1,63 @@
-Explicación Técnica
+# Boss Attack Patterns — Technical Explanation
 
-Los disparos de mi jefe se centran en una arquitectura modular con tres elementos claves: RadialShotSettings, ShotAttack, y BossAttackController. Cada ataque usa variaciones de la generación de direcciones y tiempos de disparo para lograr patrones distintos.
+Este documento explica la implementación técnica de los tres patrones de disparo del jefe en el proyecto. Los ataques funcionan mediante una arquitectura modular compuesta por tres elementos principales.  
+RadialShotSettings define los parámetros del disparo.  
+ShotAttack contiene la lógica matemática que genera las direcciones.  
+BossAttackController controla la duración y secuencia de cada ataque.
 
-Patrón 1 – Disparo Radial Básico
-En este patrón se genera un círculo de balas alrededor del jefe, o en el caso de mi juego, la pistola del jefe. 
-Calculamos el ángulo con: angleBetweenBullets = 360f / NumberOfBullets
-Por cada bala rotamos un vector base(transform.up) usando una extensión que usa Quaternion.
-Cada bala se obtiene del BulletPool, se activa y se le asigna una velocidad en la dirección. 
-El código principal de este disparo se puede ver aquí:
+---
 
-Se repite 10 veces gracias al coroutine:
+# Patron 1 — Disparo Radial Basico
 
-Así conseguimos nuestro tiro redondo:
+Este patron dispara balas distribuidas uniformemente alrededor del jefe. El calculo principal consiste en dividir el circulo completo entre el numero de balas usando la expresion angleBetweenBullets = 360f / NumberOfBullets.  
+Con este valor se generan direcciones al rotar un vector base mediante una funcion auxiliar que usa una transformacion en el plano.  
+Cada direccion produce una bala obtenida del BulletPool y se le asigna la velocidad establecida en la configuracion.  
+El ataque se repite durante un tiempo controlado por un coroutine dentro del BossAttackController.  
+El resultado final es un circulo de balas que sale simultaneamente en todas direcciones.
 
+---
 
-Patrón 2 – Estrella Rotante
-El segundo patrón alterna entre dos fases para crear un efecto de estrella. 
-El patrón sigue la misma estructura radial que el disparo básico, sin embargo, alterna un offset angular de media separación entre balas.
-Un ciclo dispara normal, mientras que el otro dispara con 180 / N grados. 
-Esto produce un patrón donde las líneas de balas cruzan, creando la forma de estrella.
-La función responsable del disparo se puede ver aquí: 
+# Patron 2 — Estrella Rotante
 
-El patrón generado se ve así: 
+Este patron utiliza la misma logica radial del disparo basico pero alternando dos fases de disparo.  
+Una fase dispara de manera normal y la siguiente desplaza las direcciones media separacion angular.  
+Este desplazamiento se logra aplicando un offset adicional equivalente a la mitad de angleBetweenBullets.  
+La alternancia entre una fase y otra genera lineas de balas que se cruzan y forman una figura en forma de estrella que cambia con cada rafaga.  
+El efecto final es un patron dinamico donde las lineas parecen rotar debido a los cambios de fase entre cada disparo.
 
+---
 
-Patrón 3 – Espiral Continua
-Para este disparo se genera un stream de balas que gira progresivamente. El funcionamiento es de la siguiente manera:
-Se mantiene un ángulo acumulado llamado currentAngle.
-En cada iteración del ciclo, se calcula una dirección desde ese ángulo:
+# Patron 3 — Espiral Continua
 
-Se hace un solo disparo en esa dirección.
-Después, el ángulo aumenta por angleStep, generando la forma de espiral.
-El cooldown lo hice corto para que se vea fluido el efecto. 
-Es importante notar que este ataque no utiliza un círculo. 
-El patrón se ve de la siguiente manera: 
+Este patron no dispara un circulo completo sino un flujo continuo de balas que giran progresivamente.  
+En lugar de repartir balas alrededor del circulo se usa un angulo acumulado llamado currentAngle que aumenta de manera constante con cada iteracion.  
+La direccion de disparo se calcula convirtiendo ese angulo a radianes y generando un vector mediante funciones trigonometricas.  
+Cada bala se dispara individualmente y el angulo sigue aumentando, produciendo una trayectoria en espiral.  
+La forma final depende tanto del tiempo como del aumento progresivo del angulo, lo que da un movimiento continuo y fluido.
 
+---
 
-Por qué cada patrón es diferente
-Los tres patrones son mecánicamente distintos, no solo son cambios de velocidad y dirección.
+# Diferencias entre los patrones
 
-Ataque 1: Círculo básico 
-Se disparan todas las balas al mismo tiempo en una distribución uniforme.
-No hay movimiento angular acumulado.
-No hay alternancia de fases.
+Cada patron funciona de manera distinta aunque comparten la misma estructura modular.  
+El disparo radial genera un circulo completo con todas las balas al mismo tiempo y sin acumulacion angular.  
+El patron de estrella alterna entre dos fases para crear intersecciones y huecos que forman una figura geometrica.  
+El patron de espiral dispara una sola bala a la vez y acumula angulo continuamente, formando una curva basada en el paso del tiempo.
 
-Ataque 2: Estrella rotante
-Usa el mismo número de balas, pero alterna fases entre disparos/rafagas.
-La alteración de las balas crea huecos y líneas entrecruzadas.  
+---
 
-Ataque 3: Espiral
-No dispara en círculo, dispara un stream de balas. 
-El ángulo nunca reinicia, siempre se acumula.
-La geometría del patrón nace del tiempo
+# Ajuste y configuracion desde el inspector
 
-Los tres patrones incluso son modificables directamente del Boss:
+Los tres patrones pueden modificarse directamente desde el inspector de Unity.  
+Cada configuracion permite cambiar numero de balas, velocidad, offsets y tipos de variacion angular.  
+Esto facilita ajustar cada ataque sin modificar codigo.
 
-Referencias/Inspiracion: 
-- https://www.youtube.com/watch?v=0cycus0Ojnc
-- https://www.youtube.com/watch?v=rVBzTKvoStk
-- https://www.youtube.com/watch?v=0cycus0Ojnc
-- https://www.youtube.com/watch?v=xrLlZ1mHCTA
-- https://www.youtube.com/watch?v=_YgeNG6MtQQ
+---
+
+# Referencias
+
+https://www.youtube.com/watch?v=0cycus0Ojnc  
+https://www.youtube.com/watch?v=rVBzTKvoStk  
+https://www.youtube.com/watch?v=0cycus0Ojnc  
+https://www.youtube.com/watch?v=xrLlZ1mHCTA  
+https://www.youtube.com/watch?v=_YgeNG6MtQQ
