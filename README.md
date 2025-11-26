@@ -1,4 +1,5 @@
 Explicación Técnica
+
 Los disparos de mi jefe se centran en una arquitectura modular con tres elementos claves: RadialShotSettings, ShotAttack, y BossAttackController. Cada ataque usa variaciones de la generación de direcciones y tiempos de disparo para lograr patrones distintos.
 
 Patrón 1 – Disparo Radial Básico
